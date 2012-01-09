@@ -21,6 +21,8 @@ def processFolder(fedora, config):
     myCollection = addCollectionToFedora(fedora, config.myCollectionName, myPid=config.myCollectionPid, parentPid=config.hostCollectionPid, tnUrl=config.myCollectionIcon)
 
     baseFileDict = { 'parentPid' : config.myCollectionPid, 'contentModel' : 'islandora:sp_large_image_cmodel' }
+    totalFiles = 0
+    completeFiles = 0
     for subFolder in os.listdir(folder):
         if os.path.isdir(os.path.join(folder, subFolder)):
             print("Scan Folder %s" % subFolder)
@@ -44,8 +46,10 @@ def processFolder(fedora, config):
 
             # creation of the dictionary here might be bad
             fileDict.update(baseFileDict)
+            totalFiles = totalFiles + 1
             if FileIngester.createObjectFromFiles(fedora, config, fileDict):
                 print("Object (%s) ingested successfully" % subFolder)
+                completeFiles = completeFiles + 1
 
     """
     for idx, page in enumerate(pages):
@@ -82,5 +86,7 @@ def processFolder(fedora, config):
         sys.stdout.flush()
         sys.stderr.flush()
     """
+
+    config.message.addLine("Ingested %d/%d objects" % (completeFiles, totalFiles))
 
     return True
