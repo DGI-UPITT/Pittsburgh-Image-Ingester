@@ -98,7 +98,7 @@ def addCollectionToFedora(fedora, myLabel, myPid, parentPid="islandora:root", co
 
     # this is the biggest difference between objects and collections - a collection policy
     # collection policy
-    fedoraLib.update_datastream(collection_object, u"COLLECTION_POLICY", "collection_policy.xml", label=u'COLLECTION_POLICY', mimeType=u'text/xml', controlGroup=u'X')
+    fedoraLib.update_datastream(collection_object, u"COLLECTION_POLICY", "data/collection_policy.xml", label=u'COLLECTION_POLICY', mimeType=u'text/xml', controlGroup=u'X')
 
     # thumnail, if one is supplied
     if tnUrl:
