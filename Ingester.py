@@ -10,8 +10,8 @@ import zipfile
 from optparse import OptionParser
 #import pdb
 
-from commonFedora import connectToFedora
-from ConfigData import *
+from utils.commonFedora import connectToFedora
+from utils.ConfigData import *
 
 import Navigator
 
