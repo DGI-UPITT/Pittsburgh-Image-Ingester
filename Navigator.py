@@ -1,4 +1,4 @@
-from commonFedora import *
+from utils.commonFedora import *
 import glob
 import FileIngester
 
