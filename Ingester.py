@@ -78,6 +78,7 @@ def main(argv):
     atexit.register(sendReport)
 
     """ ====== ENVIRONMENT VARIABLES ====== """
+    os.environ["PATH"] = os.environ["PATH"] + ":/opt/jhove"
     convertPath = "/usr/local/bin"
     if not os.environ["PATH"].startswith(convertPath):
         os.environ["PATH"] = convertPath + ":" + os.environ["PATH"]#need to prepend this one for precedence over pre-existing convert command
