@@ -1,5 +1,8 @@
 from islandoraUtils import fileConverter as converter
 from utils.commonFedora import *
+import subprocess
+
+XSL_CMD = "xsltproc"
 
 """ ====== INGEST A SINGLE OBJECT ====== """
 def createObjectFromFiles(fedora, config, objectData):
@@ -56,15 +59,26 @@ def createObjectFromFiles(fedora, config, objectData):
     baseName = os.path.splitext(os.path.basename(tifFile))[0]
     jp2File = os.path.join(config.tempDir, "%s.jp2" % baseName)
     converter.tif_to_jp2(tifFile, jp2File, 'default', 'default') # this will generate jp2File
-    fedoraLib.update_datastream(obj, s"JP2", jp2File, label=unicode("%s.jp2" % baseName), mimeType=misc.getMimeType("jp2"))
+    fedoraLib.update_datastream(obj, u"JP2", jp2File, label=os.path.basename(jp2File), mimeType=misc.getMimeType("jp2"))
     os.remove(jp2File) # finished with that
 
     # extract mix metadata
     #cmd= jhove -h xml $INFILE | xsltproc jhove2mix.xslt - > `basename ${$INFILE%.*}.mix`
-    #jhoveCmd = ["jhove", "-h", "xml", tifFile]
-    #r = popen(jhoveCmd, shell=True, stdout=tmp)
-    #if r != 0:
-    #    # failed for some reason
-    #    print("jhove conversion failed")
+    mixFile = os.path.join(config.tempDir, "%s.mix.xml" % baseName)
+    """ extract this into tif_to_mix() """
+    outfile = open(mixFile, "w")
+    jhoveCmd1 = ["jhove", "-h", "xml", tifFile]
+    jhoveCmd2 = ["xsltproc", "data/jhove2mix.xslt", "-"] # complete cmd for xsltproc
+    #jhoveCmd2 = ["xalan", "-xsl", "data/jhove2mix.xslt"] # complete cmd for xalan
+    p1 = subprocess.Popen(jhoveCmd1, stdout=subprocess.PIPE)
+    p2 = subprocess.Popen(jhoveCmd2, stdin=p1.stdout, stdout=outfile)
+    r = p2.communicate()
+    if os.path.getsize(mixFile) == 0:
+        # failed for some reason
+        print("jhove conversion failed")
+    outfile.close()
+    """ end extract """
+    fedoraLib.update_datastream(obj, u"MIX", mixFile, label=os.path.basename(mixFile), mimeType=misc.getMimeType("xml"))
+    os.remove(mixFile)
 
     return True
