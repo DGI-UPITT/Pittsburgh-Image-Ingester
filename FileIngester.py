@@ -2,8 +2,6 @@ from islandoraUtils import fileConverter as converter
 from utils.commonFedora import *
 import subprocess
 
-XSL_CMD = "xsltproc"
-
 """ ====== INGEST A SINGLE OBJECT ====== """
 def createObjectFromFiles(fedora, config, objectData):
     """
