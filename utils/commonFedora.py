@@ -1,4 +1,4 @@
-from types import *
+from types import DictType
 import os
 from islandoraUtils import fileConverter as converter
 from islandoraUtils import fileManipulator
@@ -147,26 +147,3 @@ def addObjectToFedora(fedora, myLabel, myPid, parentPid, contentModel, tnUrl=Non
     obj_relsext = createRelsExt(obj, parentPid, contentModel, extraNamespaces=extraNamespaces, extraRelationships=extraRelationships)
 
     return obj
-
-# this function is taken from the old book converter
-# it might not be needed as these features may be automatic
-def sendToSolr():
-    """
-    This is a helper function that creates and sends information to solr for ingest
-    """
-
-    """
-    solrFile = os.path.join(os.path.dirname(config["modsFilePath"]), 'mods_book_solr.xml')
-    converter.mods_to_solr(config["modsFilePath"], solrFile)
-    solrFileHandle = open(solrFile, 'r')
-    solrFileContent = solrFileHandle.read()
-    solrFileContent = solrFileContent[solrFileContent.index('\n'):]
-    curlCall = 'curl %s/update?commit=true -H "Content-Type: text/xml" --data-binary "%s"' % (config.solrUrl, solrFileContent)
-
-    # be careful here, shell=True can cause problems
-    r = subprocess.call(curlCall, shell=True)
-    if r != 0:
-        logging.error('Trouble currling with Solr power. Curl returned code: %d' % r)
-    solrFileHandle.close()
-    """
-    return True
