@@ -5,7 +5,7 @@ import FileIngester
 """ ====== INGEST FILES IN A FOLDER ====== """
 def processFolder(fedora, config):
     """
-    Create a bunch of fedora objects (1 for each tif in @folder)
+    Create a bunch of fedora objects (1 for each tif in @config.inDir)
     """
 
     folder = config.inDir
@@ -20,6 +20,7 @@ def processFolder(fedora, config):
     # the aggregate (image root)
     myCollection = addCollectionToFedora(fedora, config.myCollectionName, myPid=config.myCollectionPid, parentPid=config.hostCollectionPid, tnUrl=config.myCollectionIcon)
 
+    # this is the list of all folders to search in for images
     baseFileDict = { 'parentPid' : config.myCollectionPid, 'contentModel' : 'islandora:sp_large_image_cmodel' }
     totalFiles = 0
     completeFiles = 0
