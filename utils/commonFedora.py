@@ -35,11 +35,11 @@ def createRelsExt(childObject, parentPid, contentModel, extraNamespaces={}, extr
     Create the RELS-EXT relationships between childObject and object:parentPid
     We set the default namespace for our interconnections, then apply the content model, and make
     childObject a member of the object:parentPid collection.  If object:parentPid doesn't have the
-    collection content model then hilarity could ensue...
+    collection content model then strange things might happen.
     @param childObject The FedoraObject to attach the RELS-EXT to.
     @param parentPid The pid of the parent to assign to childObject.
-    @param contentModel The contentmode to give to childObject.
-    @param extraNamespaces Any extra namespaces to put in the RELS-EXT data.
+    @param contentModel The @contentModel to give to childObject.
+    @param extraNamespaces Any @extraNamespaces to put in the RELS-EXT data.
     @param extraRelationsips Any additional relationship values to assign to childObject.  By default
            the object gets: hasModel:contentModel and isMemberOfCollection:parentPid
     """
@@ -93,6 +93,7 @@ def addCollectionToFedora(fedora, myLabel, myPid, parentPid="islandora:root", co
     except FedoraConnectionException, fcx:
         if not fcx.httpcode in [404]:
             raise fcx
+        # if it is a 404, then we're ok - just make the object and continue
 
     collection_object = fedora.createObject(myPid, label=myLabel)
 
@@ -100,7 +101,7 @@ def addCollectionToFedora(fedora, myLabel, myPid, parentPid="islandora:root", co
     # collection policy
     fedoraLib.update_datastream(collection_object, u"COLLECTION_POLICY", "data/collection_policy.xml", label=u'COLLECTION_POLICY', mimeType=u'text/xml', controlGroup=u'X')
 
-    # thumnail, if one is supplied
+    # thumbnail, if one is supplied
     if tnUrl:
         tnExt = os.path.splitext(tnUrl)[1]
         fedoraLib.update_datastream(collection_object, u'TN', tnUrl, label=u"%s_TN%s" % (myLabel, tnExt), mimeType=misc.getMimeType(tnExt))
