@@ -16,7 +16,7 @@ def createObjectFromFiles(fedora, config, objectData):
             return False
 
     #objPid = fedora.getNextPID(config.fedoraNS)
-    objPid = "hpitt:%s" % objectData['label']
+    objPid = "%s:%s" % (config.fedoraNS, objectData['label'])
 
     #extraNamespaces = { 'pageNS' : 'info:islandora/islandora-system:def/pageinfo#' }
     #extraRelationships = { fedora_relationships.rels_predicate('pageNS', 'isPageNumber') : str(idx+1) }
@@ -24,11 +24,14 @@ def createObjectFromFiles(fedora, config, objectData):
     if config.dryrun:
         return True
 
+    #extraNamespaces = { 'pageNS' : 'info:islandora/islandora-system:def/pageinfo#' }
+    #extraRelationships = { fedora_relationships.rels_predicate('pageNS', 'isPageNumber') : str(idx+1) }
+
     # create the object (page)
     try:
         obj = addObjectToFedora(fedora, unicode("%s" % objectData['label']), objPid, objectData['parentPid'], objectData['contentModel'])
     except FedoraConnectionException, fcx:
-        print("Connection error while trying to add fedora object (%s) - the connection to fedora may be broken", page)
+        print("Connection error while trying to add fedora object (%s) - the connection to fedora may be broken", objPid)
         return False
 
     # ingest the datastreams we were given
