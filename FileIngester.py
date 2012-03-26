@@ -18,9 +18,6 @@ def createObjectFromFiles(fedora, config, objectData):
     #objPid = fedora.getNextPID(config.fedoraNS)
     objPid = "%s:%s" % (config.fedoraNS, objectData['label'])
 
-    #extraNamespaces = { 'pageNS' : 'info:islandora/islandora-system:def/pageinfo#' }
-    #extraRelationships = { fedora_relationships.rels_predicate('pageNS', 'isPageNumber') : str(idx+1) }
-
     if config.dryrun:
         return True
 
@@ -42,7 +39,6 @@ def createObjectFromFiles(fedora, config, objectData):
         else:
             controlGroup = "M"
         fedoraLib.update_datastream(obj, dsid, file, label=unicode(os.path.basename(file)), mimeType=misc.getMimeType(os.path.splitext(file)[1]), controlGroup=controlGroup)
-    #fedoraLib.update_datastream(obj, "TIFF", tifFile, label=unicode("%s.tif" % basePage), mimeType=misc.getMimeType("tiff"))
 
     # ingest my custom datastreams for this object
 
