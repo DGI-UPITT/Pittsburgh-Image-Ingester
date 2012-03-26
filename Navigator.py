@@ -44,6 +44,7 @@ def processFolder(fedora, config):
             addFileByPattern("MODS", "*.mods.xml")
             addFileByPattern("TN", "*.thumb.jpg")
             addFileByPattern("DC", "*.dc.xml")
+            addFileByPattern("KML", "*.kml.xml")
 
             # creation of the dictionary here might be bad
             fileDict.update(baseFileDict)
