@@ -34,7 +34,7 @@ def createObjectFromFiles(fedora, config, objectData):
     # ingest the datastreams we were given
     for dsid, file in objectData['datastreams'].iteritems():
         # hard coded blarg:
-        if dsid in ["MODS"]:
+        if dsid in [ "MODS", "KML" ]:
             controlGroup = "X"
         else:
             controlGroup = "M"
